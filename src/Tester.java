@@ -18,6 +18,9 @@ public class Tester
     }
     
     public void testLogAnalyzer() {
-        // complete method
+        LogAnalyzer la = new LogAnalyzer();
+        String fileLogName = "short-test_log";
+        la.readFile(fileLogName);
+        la.printAll();
     }
 }
