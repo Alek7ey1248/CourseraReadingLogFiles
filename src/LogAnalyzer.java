@@ -31,10 +31,56 @@ public class LogAnalyzer
 
      // выводит в консоль весь ArreyList<EntryLog> records - массив записей журнала класса LogEntry
      public void printAll() {
+         int i = 0;
          for (LogEntry le : records) {
-             System.out.println(le);
+             i++;
+             System.out.println(i + "\t" + le);
          }
      }
-     
+
+    // метод должен записывать в ArrayList<String> uniqueIps все уникальные
+    // IP адреса из ArrayList<LogEntry> records и возвращать их кол-во,
+    public int countUniqueIPs() {
+        ArrayList<String> uniqueIps = new ArrayList<>();
+        for (LogEntry le : records) {
+            String ipAddr = le.getIpAddress();
+            if (!uniqueIps.contains(ipAddr)) {
+                uniqueIps.add(ipAddr);
+                System.out.println("                 \t" + ipAddr);
+            }
+        }
+        return uniqueIps.size();
+    }
+
+
+    // метод должен вывести те LogEntrys (записи журнала),
+    // которые имеют код состояния больше, чем num.
+    public void printAllHigherThanNum(int num) {
+         for (LogEntry le : records) {
+             int i = 0;
+             if (le.getStatusCode() > num) {
+                 i++;
+                 System.out.println(i + "\t" + le);
+             }
+         }
+    }
+
+
+    // метод возвращает ArrayList строк уникальных IP-адресов,
+    // которые имели доступ в данный день
+    public ArrayList<String> uniqueIPVisitsOnDay(String data) {
+         int i = 0;
+         ArrayList<String> uniqueIPVisits = new ArrayList<String>();
+         for (LogEntry le : records) {
+             if (le.getAccessTime().toString().contains(data)) {
+                 if (!uniqueIPVisits.contains(le.getIpAddress())) {
+                     uniqueIPVisits.add(le.getIpAddress());
+                     i++;
+                     System.out.println(i + "            \t" + le.getIpAddress());
+                 }
+             }
+         }
+         return uniqueIPVisits;
+    }
      
 }

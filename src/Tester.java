@@ -19,8 +19,25 @@ public class Tester
     
     public void testLogAnalyzer() {
         LogAnalyzer la = new LogAnalyzer();
-        String fileLogName = "short-test_log";
+        String fileLogName = "weblog-short_log";
+
+        System.out.println(" загружаем построчно fileLogName - " + fileLogName + " в ArrayList<LogEntry> records");
         la.readFile(fileLogName);
         la.printAll();
+        System.out.println();
+
+        System.out.println(" Уникальные IP адреса");
+        int countUniqIPs = la.countUniqueIPs();
+        System.out.println(" Кол-во уникальных IP адресов в журнале - " + countUniqIPs);
+        System.out.println();
+
+        int num = 200 ;
+        System.out.println(" LogEntrys (записи журнала), которые имеют код состояния больше, чем num");
+        la.printAllHigherThanNum(200);
+        System.out.println();
+
+        String data = "Sep 14";
+        System.out.println(" ArrayList -  строк уникальных IP-адресов, которые имели доступ в данный день");
+        ArrayList<String> uniqIPVisitsOnDay = la.uniqueIPVisitsOnDay(data);
     }
 }

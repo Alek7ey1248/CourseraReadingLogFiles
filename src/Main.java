@@ -7,6 +7,7 @@ public class Main {
 //        test.testLogEntry();
 
         System.out.println(" тест класса LogAnalyzer ");
+        System.out.println();
         test.testLogAnalyzer();
     }
 }
