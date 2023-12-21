@@ -156,7 +156,7 @@ public class LogAnalyzer
         HashMap<String, ArrayList<String>> map = new HashMap<String, ArrayList<String>>();
         for (LogEntry le : records) {
             String data = le.getAccessTime().toString();
-            data = data.substring(3, 10);      // вырезаем только дату
+            data = data.substring(4, 10);      // вырезаем только дату
             String ip = le.getIpAddress();
             if (!map.containsKey(data)) {
                 ArrayList<String> newList = new ArrayList<String>();
@@ -169,5 +169,72 @@ public class LogAnalyzer
             }
         }
         return map;
+    }
+
+
+
+    // метод имеет один параметр, представляющий собой HashMap<String, ArrayList<String>>
+    //   КЛЮЧ - дата, ЗНАЧЕНИЕ - ArrayList IP адресов.
+    //   Такой HashMap дает метод iPsForDays, сделанный высше.
+    //   Этот метод возвращает день, в который произошло наибольшее количество
+    //   посещений IP-адресов. Если существует равенство, то возвращается любой такой день.
+    public String dayWithMostIPVisits(HashMap<String, ArrayList<String>> mapIPForDays) {
+         String dayWithMostVisits = "";
+         int maxListSize = 0;
+         for (String keyData : mapIPForDays.keySet()) {      // по ключам
+             int currentListSize = mapIPForDays.get(keyData).size();
+             if (currentListSize > maxListSize) {
+                 maxListSize = currentListSize;
+                 dayWithMostVisits = keyData;
+             }
+         }
+         return dayWithMostVisits;
+    }
+
+
+
+    // метод имеет два параметра: первый - это HashMap<String, ArrayList<String>>,
+    // который использует записи и сопоставляет дни из веб-журналов с ArrayList IP-адресов,
+    // которые произошли в этот день,
+    // а второй параметр - это String, представляющий день в формате "MMM DD".
+    // Этот метод возвращает ArrayList<String> IP-адресов, к которым было наибольшее количество обращений в данный день
+    public ArrayList<String> iPsWithMostVisitsOnDay(HashMap<String, ArrayList<String>> mapIPForDays, String data) {
+        // берем из  HashMap<String, ArrayList<String>> mapIPForDays по ключу data,
+        // ArrayList IP адресов в эту дату
+        ArrayList<String> listIPs = new ArrayList<>();
+        listIPs = mapIPForDays.get(data);
+        if (listIPs == null) {
+            System.out.println(" !!! Нету даты " + data + " в списке");
+            ArrayList<String> errorList = new ArrayList<>();
+            errorList.add("некорректная дата !!!");
+            return errorList;
+        }
+        // HashMap в котором КЛЮЧИ - IPадреса, значения - их кол-ва
+        // Будем его делать из listIPs
+        HashMap<String, Integer> mapCountIPs = new HashMap<String, Integer>();
+        // перебираем ArrayList IPадресов и делаем mapCountIPs
+        for (int i = 0; i < listIPs.size(); i++) {
+            String currIP = listIPs.get(i);
+            if (!mapCountIPs.containsKey(currIP)) {     // если в хашмап нету IP
+                mapCountIPs.put(currIP, 1);
+            } else {                                 // если есть такой IP, то увеличиваем значение на 1
+                mapCountIPs.put(currIP, mapCountIPs.get(currIP) + 1);
+            }
+        }
+
+        // переберем полученый ХашМап и найдем максимальное значение (кол-во IP адресов)
+        int max = 0;
+        for (String keyIP : mapCountIPs.keySet()) {
+            if (mapCountIPs.get(keyIP) > max) max = mapCountIPs.get(keyIP);
+        }
+
+        // все ключи с max значением добавляем в аррейлист результат
+        ArrayList<String> resList = new ArrayList<String>();
+        for (String keyIP : mapCountIPs.keySet()) {
+            if (mapCountIPs.get(keyIP) == max) {
+                resList.add(keyIP);
+            }
+        }
+        return resList;
     }
 }

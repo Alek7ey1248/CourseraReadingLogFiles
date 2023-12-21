@@ -19,9 +19,9 @@ public class Tester
     
     public void testLogAnalyzer() {
         LogAnalyzer la = new LogAnalyzer();
-        String fileLogName = "weblog-short_log";
+        //String fileLogName = "weblog2-short_log";
         //String fileLogName = "weblog3-short_log";
-        //String fileLogName = "weblog1_log";
+        String fileLogName = "weblog2_log";
 
         System.out.println(" загружаем построчно fileLogName - " + fileLogName + " в ArrayList<LogEntry> records");
         la.readFile(fileLogName);
@@ -38,13 +38,13 @@ public class Tester
         la.printAllHigherThanNum(num);
         System.out.println();
 
-        String data = "Mar 24";
+        String data = "Sep 24";
         System.out.println(" ArrayList -  строк уникальных IP-адресов, которые имели доступ " + data);
         ArrayList<String> uniqIPVisitsOnDay = la.uniqueIPVisitsOnDay(data);
         System.out.println();
 
-        int low = 300;
-        int high = 399;
+        int low = 200;
+        int high = 299;
         System.out.println(" уникальные IP адреса записей журнала, которые имеют код состояния statusCode в диапазоне от " + low + " до " +  high + ", включительно");
         int countUniqueIPsInRange = la.countUniqueIPsInRange(low, high);
         System.out.println(" Их кол-во - " + countUniqueIPsInRange);
@@ -75,7 +75,17 @@ public class Tester
         int n = 0;
         for (String dataKey : mapIPsForDays.keySet()) {    // по ключам
             n++;
-            System.out.println(n + "\t" + dataKey + " - " + "\t" + mapIPsForDays.get(dataKey).toString());
+            System.out.println(n + "\t" + "--" + dataKey + "-- - " + "\t" + mapIPsForDays.get(dataKey).toString());
         }
+        System.out.println();
+
+        String dayWithMostIPVisits = la.dayWithMostIPVisits(mapIPsForDays);   // используем HashMap mapIPsForDays, который получили в тесте предыдущего метода iPsForDays
+        System.out.println(" Наибольшее кол-во посещений сайта было - " + dayWithMostIPVisits);
+        System.out.println();
+
+        String ddata = "Sep 30";
+        ArrayList<String> iPsWithMostVisitsOnDay = la.iPsWithMostVisitsOnDay(mapIPsForDays, ddata);
+        System.out.println(" ArrayList<String> IP-адресов, к которым было наибольшее количество обращений в данный день - " + ddata);
+        System.out.println(iPsWithMostVisitsOnDay.toString());
     }
 }
